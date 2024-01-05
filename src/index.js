@@ -39,7 +39,7 @@ app.get("/app/:id", async (req, res) => {
   try {
     const response = await searchByAppId(req.params.id);
     // console.log(response);
-    if (!response.data || response.data.title.length <=0) throw new Error();
+    if (!response) throw new Error();
     res.send({
       status: res.statusCode,
       data: response.data
@@ -59,7 +59,7 @@ app.get("/developer/:q", async (req, res) => {
   console.time();
   try {
     const response = await searchPublisher((req.params.q).replace(' ','+'));
-    if (!response.data || response.data.name.length <=0) throw new Error();
+    if (!response) throw new Error();
     res.send({
       status: res.statusCode,
       data: response.data

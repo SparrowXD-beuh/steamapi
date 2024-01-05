@@ -28,7 +28,7 @@ async function searchByAppId(id) {
         cookie.secure = true;
       });
     }
-    console.log(cookies);
+    // console.log(cookies);
     const response = await axios.get(
       `https://store.steampowered.com/app/${id}/`,
       {
