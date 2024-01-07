@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const searchByQuery = require('./modules/searchByQuery')
 const { searchByAppId, connectToDatabase } = require("./modules/searchByAppId");
@@ -9,10 +10,6 @@ connectToDatabase().then(() => {
     console.log(`API is online`);
   });
 })
-
-app.get("/", (req, res) => {
-  res.send("Hello world!");
-});
 
 app.get("/search", async (req, res) => {
   console.time();
@@ -53,13 +50,21 @@ app.get("/app/:id", async (req, res) => {
   } finally {
     console.timeEnd();
   }
-})
+});
 
 app.get("/developer/:q", async (req, res) => {
   console.time();
   try {
     const response = await searchPublisher((req.params.q).replace(' ','+'));
     if (!response) throw new Error();
+    const featuredGames = await Promise.all(response.temp.map(async (listItem, i) => {
+      const app = await Promise.all(listItem.games.map(async (appId) => {
+        return (await searchByAppId(appId)).data;
+      }));
+      // console.log(app)
+      return { name: response.temp[i].name, games: app };
+    }));
+    response.data.list = featuredGames;
     res.send({
       status: res.statusCode,
       data: response.data
@@ -73,4 +78,8 @@ app.get("/developer/:q", async (req, res) => {
   } finally {
     console.timeEnd();
   }
+});
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/docs.html"));
 });

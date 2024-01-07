@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./public/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon" />
+    <title>Docs</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f7f7f7;
+      }
+
+      h1,
+      h2 {
+        color: #333;
+      }
+
+      pre {
+        background-color: #ffffff;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      code {
+        font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+        font-size: 16px;
+        color: #333;
+        font-weight: bold;
+      }
+
+      hr {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border: 0;
+        border-top: 1px solid #eee;
+      }
+
+      a {
+        color: #4285f4;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      a:hover {
+        color: #1a73e8;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="color: #4285f4">Steam API Documentation</h1>
+
+    <h2 style="color: #34a853">Search by Title</h2>
+    <pre>
+          <code>
+  <a href="#">GET /search?q={gamename}</a>
+  
+  Example: <a href="#">/search?q=resident%20evil</a>
+  Response:
+  {
+    "status": 200,
+    "data": [
+      {
+        "appid": 952060,
+        "title": "Resident Evil 3",
+        "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/header.jpg?t=1701395646",
+        "images": [
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_77eda710487b89293f109cf7dcf96b4ffab0d1a1.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_ef618256720e6e665f4b8b5dd11726a561e0b16e.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_34f01910d65fb171a27e058cb74623c0eb53ba69.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_bec8b7cef716135ea5bbd726a3342ed9ca475b31.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_4f6eaac14b8e02c0a68a9c9f7627dd84cde1abb8.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_d0a4e8d7ad132b84dcfa81b159e9966546a3c4d8.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_43b2e9f4a8ae4669bba7aec19c5c05abcbfa61da.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_3cad66e33d8bb3030e958a48a236bb1d65031c0e.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_94878f724d6c81ae94aedde4da81e964801c013f.1920x1080.jpg?t=1701395646",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/952060/ss_a5be22331adec8054119e63a3f565a7fbef2f70b.1920x1080.jpg?t=1701395646"
+        ],
+        "previews": [
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/256770136/movie_max.mp4?t=1576626942"
+        ],
+        "developers": [
+          {
+            "name": "CAPCOM Co., Ltd.",
+            "href": "https://store.steampowered.com/developer/capcom?snr=1_5_9__2000"
+          }
+        ],
+        "description": "About This Game\nJill Valentine is one of the last remaining people in Raccoon City to witness the atrocities Umbrella performed. To stop her, Umbrella unleashes their ultimate secret weapon; Nemesis!\n\nAlso includes Resident Evil Resistance, a new 1 vs 4 online multiplayer game set in the Resident Evil universe where four survivors face-off against a sinister Mastermind.",
+        "releaseDate": "2 Apr, 2020",
+        "matureContentDescription": "Mature Content Description\nThe developers describe the content like this:\n\nWARNING: This game contains strong language and extreme violence.",
+        "system_requirements": {
+          "minimum": [
+            "Requires a 64-bit processor and operating system",
+            "OS: WINDOWS® 10 (64-BIT Required)",
+            "Processor: Intel® Core™ i5-4460 or AMD FX™-6300 or better",
+            "Memory: 8 GB RAM",
+            "Graphics: NVIDIA® GeForce® GTX 960 or AMD Radeon™ RX 460",
+            "DirectX: Version 12",
+            "Network: Broadband Internet connection",
+            "Storage: 45 GB available space",
+            "Additional Notes: Anticipated performance at these specifications is 1080p/30FPS for Resident Evil 3 and 720p/30FPS for Resident Evil Resistance. If you don't have enough graphics memory to run the game at your selected texture quality, you must go to Options > Graphics and lower the texture quality or shadow quality, or decrease the resolution. An internet connection is required for product activation. In addition, an internet connection is required at all times when playing Resident Evil Resistance. (Network connectivity uses Steam® developed by Valve® Corporation.)"
+          ],
+          "recommended": [
+            "Requires a 64-bit processor and operating system",
+            "OS: WINDOWS® 10 (64-BIT Required)",
+            "Processor: Intel® Core™ i7-3770 or AMD FX™-9590 or better",
+            "Memory: 8 GB RAM",
+            "Graphics: NVIDIA® GeForce® GTX 1060 or AMD Radeon™ RX 480 with 3GB VRAM",
+            "DirectX: Version 12",
+            "Network: Broadband Internet connection",
+            "Storage: 45 GB available space",
+            "Additional Notes: Anticipated performance at these specifications is 1080p/60FPS. An internet connection is required for product activation. In addition, an internet connection is required at all times when playing Resident Evil Resistance. (Network connectivity uses Steam® developed by Valve® Corporation.)"
+          ]
+        },
+        "features": [
+          "Single-player",
+          "Online PvP",
+          "Steam Achievements",
+          "Steam Trading Cards",
+          "Steam Cloud",
+          "Remote Play on Tablet",
+          "HDR available"
+        ],
+        "genres": [
+          "Action"
+        ],
+        "tags": [
+          "Action",
+          "Zombies",
+          "Horror",
+          "Female Protagonist",
+          "Multiplayer",
+          "Survival Horror",
+          "Remake",
+          "Singleplayer",
+          "Third Person",
+          "Co-op",
+          "Gore",
+          "Third-Person Shooter",
+          "Violent",
+          "Story Rich",
+          "Atmospheric",
+          "Adventure",
+          "Sexual Content",
+          "Classic",
+          "Difficult",
+          "Great Soundtrack",
+          "+"
+        ],
+        "content": [
+          {
+            "content": "RESIDENT EVIL 3 - Classic Costume Pack",
+            "price": "₹ 249"
+          },
+          {
+            "content": "Resident Evil 3 Special Soundtrack",
+            "price": "₹ 1,499"
+          },
+          {
+            "content": "Resident Evil 3 - All In-game Rewards Unlock",
+            "price": "₹ 415"
+          },
+          {
+            "content": "Resident Evil Resistance - Male Survivor Costume: Leon S. Kennedy",
+            "price": "₹ 249"
+          },
+          {
+            "content": "Resident Evil Resistance - Female Survivor Costume: Claire Redfield",
+            "price": "₹ 249"
+          }
+        ],
+        "languages": [
+          "",
+          "English",
+          "French",
+          "Italian",
+          "German",
+          "Spanish - Spain",
+          "Portuguese - Brazil",
+          "Polish",
+          "Russian",
+          "Simplified Chinese",
+          "Traditional Chinese",
+          "Japanese",
+          "Korean",
+          "Arabic",
+          "Thai",
+          "Spanish - Latin America"
+        ]
+      },
+      {
+        "appid": 304240,
+        "title": "Resident Evil",
+        "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/header.jpg?t=1700452956",
+        "images": [
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_d75906451d3a57bb8fc65fdea7ce09fbf1d3b726.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_d27983bb8176325d81cf0ca83dfb30ec247e6f23.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_ea73c8a2900d3954fac684104167a6a1eb778026.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_2ad5847f8eb39c09187dfafc240bfd821d50a8ba.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_8ff9a328bbfa668034356554ceb3d29a7dc7262f.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_063bf03851cd3e8bc9746fb4735e1aed2c3843c2.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_a7885d2ba6ca01343d4b58bfe10b74efabaa7eb7.1920x1080.jpg?t=1700452956",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/304240/ss_f962f2ae74d759e6b99c6e7627e36a630a086abd.1920x1080.jpg?t=1700452956"
+        ],
+        "previews": [
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/2034312/movie_max.mp4?t=1447363519",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/2036008/movie_max.mp4?t=1447365731"
+        ],
+        "developers": [
+          {
+            "name": "CAPCOM Co., Ltd.",
+            "href": "https://store.steampowered.com/developer/capcom?snr=1_5_9__2000"
+          }
+        ],
+        "description": "About This Game\nThe game that defined the survival-horror genre is back! Check out the remastered HD version of Resident Evil.In 1998 a special forces team is sent to investigate some bizarre murders on the outskirts of Raccoon City. Upon arriving they are attacked by a pack of blood-thirsty dogs and are forced to take cover in a nearby mansion. But the scent of death hangs heavy in the air. Supplies are scarce as they struggle to stay alive.GraphicsMore detailed graphics that retain the horror.The environments come alive with detail thanks to resolution upgrades and non-static 3D models.Post-processing effects like Bloom filters, which were not easy to do at the time of the original release, have been added to make the HD graphics even more realistic.High-Resolution Environments - We've increased the resolution of the background environments by recreating them with a mix of high-res static images, plus animated 3D models.Widescreen SupportWidescreen (16:9) is supported, so players can experience a greater sense of immersion.In widescreen mode, the screen will scroll. The parts of the screen that get cut off on the top and bottom will scroll into view automatically depending on the character's position.You can switch the display mode during gameplay in real time.Sound & New ControlsHigh-Quality Sound - The audio has been remastered to increase the sampling rate, and of course 5.1ch output is also now supported.New ControlsYou can play using the original control scheme or an alternate control scheme that lets you just push the analog stick to move in the direction you want to go.You can switch the control scheme during gameplay in real time.",
+        "releaseDate": "19 Jan, 2015",
+        "matureContentDescription": "",
+        "system_requirements": {
+          "minimum": [
+            "OS: Windows®10",
+            "Processor: Intel® Core™ 2 Duo 2.4 GHz, AMD Athlon™ X2 2.8 GHz, or better",
+            "Memory: 2 GB RAM",
+            "Graphics: NVIDIA® GeForce® GTX260, ATI Radeon HD 6790, or betterMonitor Resolution: 1024×768 or higher",
+            "DirectX: Version 9.0c",
+            "Network: Broadband Internet connection",
+            "Storage: 20 GB available space",
+            "Sound Card: DirectSound compatible (must support DirectX 9.0c or higher)",
+            "Additional Notes: Controller: Supports Keyboard +Mouse.  Genuine Xbox 360 PC compatible controller or comparable XInput-based gamepad recommended.Note: Some high end integrated graphics chips and modern gaming laptops with a discrete GPU may work but have not been tested, nor are they officially supported by Capcom."
+          ],
+          "recommended": [
+            "OS: Windows®10",
+            "Processor: Intel® Core™ 2 Quad 2.7 GHz, AMD Phenom™ II X4 3.0 GHz or better",
+            "Memory: 4 GB RAM",
+            "Graphics: NVIDIA® GeForce® GTX 560, ATI Radeon HD 6950, or betterMonitor Resolution: 1280×720 or higher",
+            "DirectX: Version 9.0c",
+            "Network: Broadband Internet connection",
+            "Storage: 20 GB available space",
+            "Sound Card: DirectSound compatible (must support DirectX 9.0c or higher)",
+            "Additional Notes: Controller: Supports Keyboard +Mouse. Genuine Xbox 360 PC compatible controller or comparable XInput-based gamepad recommended.Note: Some high end integrated graphics chips and modern gaming laptops with a discrete GPU may work but have not been tested, nor are they officially supported by Capcom."
+          ]
+        },
+        "features": [
+          "Single-player",
+          "Steam Achievements",
+          "Steam Trading Cards",
+          "Steam Cloud",
+          "Steam Leaderboards"
+        ],
+        "genres": [
+          "Action",
+          "Adventure"
+        ],
+        "tags": [
+          "Survival Horror",
+          "Zombies",
+          "Horror",
+          "Classic",
+          "Remake",
+          "Atmospheric",
+          "Singleplayer",
+          "Puzzle",
+          "Survival",
+          "Adventure",
+          "Action",
+          "Third Person",
+          "Cult Classic",
+          "Female Protagonist",
+          "Story Rich",
+          "Difficult",
+          "Gore",
+          "Shooter",
+          "Great Soundtrack",
+          "Third-Person Shooter",
+          "+"
+        ],
+        "content": [],
+        "languages": [
+          "",
+          "English",
+          "French",
+          "Italian",
+          "German",
+          "Spanish - Spain",
+          "Japanese",
+          "Simplified Chinese",
+          "Traditional Chinese"
+        ]
+      },
+      {
+        "appid": 50980,
+        "title": "Mystery Case Files: Prime Suspects™",
+        "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/50980/header.jpg?t=1531503523",
+        "images": [
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/50980/ss_bc3f7c65626504a6159260534de0fedc3ca96774.1920x1080.jpg?t=1531503523",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/50980/ss_4dbc233d0401764f72e1a1ef7dfa43b5d573a49c.1920x1080.jpg?t=1531503523",
+          "https://cdn.cloudflare.steamstatic.com/steam/apps/50980/ss_0d2d2837caadba59522879b1f974d7ddce109276.1920x1080.jpg?t=1531503523"
+        ],
+        "previews": [],
+        "developers": [
+          {
+            "name": "Big Fish Games",
+            "href": "https://store.steampowered.com/developer/BigFish?snr=1_5_9__2000"
+          }
+        ],
+        "description": "About This Game\nThe Queen's Hope Diamond has been stolen! It's up to you to search for clues throughout 22 levels, find the offending culprit, and recover the stolen gem. Expand your investigations through the game's 29 unique locations by finding items that will unlock subsequent levels. Thousands of clues are cleverly hidden within the beautiful illustrations, creating a new game experience each time you step into this masterpiece of visual indulgences!22 ever-changing levels.29 unique locations to explore.Constantly-transforming items and clues.",
+        "releaseDate": "5 Apr, 2006",
+        "matureContentDescription": "",
+        "system_requirements": {
+          "minimum": [],
+          "recommended": []
+        },
+        "features": [
+          "Single-player"
+        ],
+        "genres": [
+          "Casual"
+        ],
+        "tags": [
+          "Casual",
+          "Hidden Object",
+          "+"
+        ],
+        "content": [],
+        "languages": [
+          "",
+          "English"
+        ]
+      }
+    ]
+  }
+          </code>
+      </pre>
+
+    <hr />
+
+    <h2 style="color: #fbbc05">Get Games by ID</h2>
+    <pre>
+          <code>
+  <a href="#">GET /app/:id</a>
+              
+  Example: <a href="#">/app/730</a>
+  Response:
+  {
+    "status": 200,
+    "data": {
+      "appid": 730,
+      "title": "Counter-Strike 2",
+      "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg?t=1698860631",
+      "images": [
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_796601d9d67faf53486eeb26d0724347cea67ddc.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_d830cfd0550fbb64d80e803e93c929c3abb02056.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_13bb35638c0267759276f511ee97064773b37a51.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_0f8cf82d019c614760fd20801f2bb4001da7ea77.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_ef82850f036dac5772cb07dbc2d1116ea13eb163.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_76f6730dbb911650ba1f41c8e5b4bac638b5beea.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_808cdd373d78c3cf3a78e7026ebb1a15895e0670.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_ef98db5d5a4d877531a5567df082b0fb62d75c80.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_2254a50f27951fb9028bc00b93a7f2ed7aac1e13.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_54b9c26b028c84d5f8a5316f31ae6203953ed84d.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_1b3b5fd437939a7ed00a2155269e78994cb998d3.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_352666c1949ce3966bd966d6ea5a1afd532257bc.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_63d2733b9b4ace01a41d5ba8afd653245d05d54a.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_fe70d46859593aef623a0614f4686e2814405035.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_bb2af3e83ac0385ff2055f2ab9697cdd83e351b7.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_fb8e5e2ae29ce64e2898315c66b5db08989e8f91.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_0db84c628a798e38ca57d69abda119bee1358008.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_18e9ea2715f0407ee05e206073927a648db60d73.1920x1080.jpg?t=1698860631",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_2514675f364079b754b820cbc8b2e7c331d56a26.1920x1080.jpg?t=1698860631"
+      ],
+      "previews": [
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/256972298/movie_max.mp4?t=1696005467",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/256970298/movie_max.mp4?t=1696005475",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/256969703/movie_max.mp4?t=1696005483",
+        "https://cdn.cloudflare.steamstatic.com/steam/apps/256969690/movie_max.mp4?t=1696005491"
+      ],
+      "developers": [
+        {
+          "name": "Valve",
+          "href": "https://store.steampowered.com/developer/valve?snr=1_5_9__2000"
+        }
+      ],
+      "description": "About This Game\nFor over two decades, Counter-Strike has offered an elite competitive experience, one shaped by millions of players from across the globe. And now the next chapter in the CS story is about to begin. This is Counter-Strike 2.A free upgrade to CS:GO, Counter-Strike 2 marks the largest technical leap in Counter-Strike’s history. Built on the Source 2 engine, Counter-Strike 2 is modernized with realistic physically-based rendering, state of the art networking, and upgraded Community Workshop tools.In addition to the classic objective-focused gameplay that Counter-Strike pioneered in 1999, Counter-Strike 2 features:All-new CS Ratings with the updated Premier modeGlobal and Regional leaderboardsUpgraded and overhauled mapsGame-changing dynamic smoke grenadesTick-rate-independent gameplayRedesigned visual effects and audioAll items from CS:GO moving forward to CS2",
+      "releaseDate": "21 Aug, 2012",
+      "matureContentDescription": "Mature Content Description\nThe developers describe the content like this:\n\nIncludes intense violence and blood.",
+      "system_requirements": {
+        "minimum": [],
+        "recommended": []
+      },
+      "features": [
+        "Cross-Platform Multiplayer",
+        "Steam Trading Cards",
+        "Steam Workshop",
+        "In-App Purchases",
+        "Valve Anti-Cheat enabled",
+        "Stats",
+        "Remote Play on Phone",
+        "Remote Play on Tablet",
+        "Remote Play on TV"
+      ],
+      "genres": [
+        "Action",
+        "Free to Play"
+      ],
+      "tags": [
+        "FPS",
+        "Shooter",
+        "Multiplayer",
+        "Competitive",
+        "Action",
+        "Team-Based",
+        "eSports",
+        "Tactical",
+        "First-Person",
+        "PvP",
+        "Online Co-Op",
+        "Co-op",
+        "Strategy",
+        "Military",
+        "War",
+        "Difficult",
+        "Trading",
+        "Realistic",
+        "Fast-Paced",
+        "Moddable",
+        "+"
+      ],
+      "content": [
+        {
+          "content": "Counter-Strike 2 Soundtrack",
+          "price": "Free"
+        }
+      ],
+      "languages": [
+        "",
+        "English",
+        "Czech",
+        "Danish",
+        "Dutch",
+        "Finnish",
+        "French",
+        "German",
+        "Hungarian",
+        "Italian",
+        "Japanese",
+        "Korean",
+        "Norwegian",
+        "Polish",
+        "Portuguese - Portugal",
+        "Portuguese - Brazil",
+        "Romanian",
+        "Russian",
+        "Simplified Chinese",
+        "Spanish - Spain",
+        "Swedish",
+        "Thai",
+        "Traditional Chinese",
+        "Turkish",
+        "Bulgarian",
+        "Ukrainian",
+        "Greek",
+        "Spanish - Latin America",
+        "Vietnamese"
+      ]
+    }
+  }
+          </code>
+      </pre>
+
+    <hr />
+
+    <h2 style="color: #4285f4">Get developer by name</h2>
+    <pre>
+          <code>
+  <a href="#">GET /developer/:name</a>
+  
+  Example: <a href="#">/developer/playstationstudios</a>
+  Response:
+          </code>
+      </pre>
+  </body>
+</html>

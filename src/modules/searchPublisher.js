@@ -1,6 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const { searchByAppId, database } = require("./searchByAppId");
+const { database } = require("./searchByAppId");
 
 const searchPublisher = async function (name) { 
   try {
@@ -39,7 +39,7 @@ const searchPublisher = async function (name) {
     };
     const featured = await Promise.all(list.map(async (listItem, i) => {
       const app = await Promise.all(listItem.map(async (appId) => {
-        return await searchByAppId(appId);
+        return appId; //await searchByAppId(appId);
       }));
       return { name: listNames[i], games: app };
     }));
@@ -49,14 +49,14 @@ const searchPublisher = async function (name) {
         name: curatorName,
         avtar: curatorAvtar,
         banner: curatorBanner,
-        lists: featured
       },
+      temp: featured
     }
     if (doc.data.name.length <= 0) return
     await database.db("steam").collection("developers").createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
     doc.expiresAt = new Date();
     doc.expiresAt.setSeconds(doc.expiresAt.getSeconds() + 604800);
-    await database.db("steam").collection("developers").insertOne(doc);;
+    await database.db("steam").collection("developers").insertOne(doc);
     return doc;
   } catch (error) {
     console.error(error)

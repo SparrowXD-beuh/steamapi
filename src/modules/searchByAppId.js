@@ -25,16 +25,18 @@ async function searchByAppId(id) {
     const cookies = await database.db("steam").collection("cookies").findOne({_id: "cookies"});
     if (cookies && cookies.cookies) {
       cookies.cookies.forEach(cookie => {
-        cookie.secure = true;
+        if (cookie.name === "wants_mature_content") {
+          cookie.path = `/app/${id}`;
+        }
       });
     }
-    // console.log(cookies);
+    // console.log(cookies.cookies);
     const response = await axios.get(
       `https://store.steampowered.com/app/${id}/`,
       {
         headers: {
-          headers,
-          Cookie: cookies
+          Cookie: cookies.cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; '),
+          ...headers
         },
       }
     );

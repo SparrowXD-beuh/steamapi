@@ -18,7 +18,7 @@ async function searchByQuery(query) {
       await Promise.all(
         appIds.slice(0,15).map(async (appId) => {
           const res = await searchByAppId(appId);
-          if (res !== 0) results.push(res.data);
+          if (res) results.push(res.data);
           // console.log(res)
         })
       );
