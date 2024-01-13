@@ -1,11 +1,11 @@
 const path = require("path");
 const express = require("express");
-const searchByQuery = require('./modules/searchByQuery')
+const { searchByQuery } = require('./modules/searchByQuery')
 const { searchByAppId, connectToDatabase } = require("./modules/searchByAppId");
 const searchPublisher = require("./modules/searchPublisher");
 
 const app = express();
-connectToDatabase().then(() => {
+connectToDatabase().then(async () => {
   app.listen(process.env.PORT || 3000, async () => {
     console.log(`API is online`);
   });

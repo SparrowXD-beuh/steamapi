@@ -28,8 +28,7 @@ async function searchByQuery(query) {
       const indexB = appIds.indexOf(b.id);
       return indexA - indexB;
     })
-  // console.log(results);
   return results;
 }
 
-module.exports = searchByQuery;
+module.exports =  {searchByQuery};
