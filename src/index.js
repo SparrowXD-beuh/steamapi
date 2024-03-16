@@ -1,12 +1,14 @@
 const path = require("path");
 const express = require("express");
+const fetchCookies = require("./cookies");
+const { connectToDatabase } = require("./database");
 const { searchByQuery } = require('./modules/searchByQuery')
-const { searchByAppId, connectToDatabase } = require("./modules/searchByAppId");
+const { searchByAppId } = require("./modules/searchByAppId");
 const searchPublisher = require("./modules/searchPublisher");
 
 const app = express();
-connectToDatabase().then(async () => {
-  app.listen(process.env.PORT || 3000, async () => {
+connectToDatabase().then(() => {
+  app.listen(process.env.PORT || 3000, () => {
     console.log(`API is online`);
   });
 })
@@ -82,4 +84,14 @@ app.get("/developer/:q", async (req, res) => {
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/docs.html"));
+});
+
+app.get(`/api/cookies`, async (req, res) => {
+  if (req.query.key != process.env.KEY) return res.send({
+    statusCode: 404,
+    error: "invalid request. cannot get /api/cookies",
+    docs: "/docs"
+  });
+  const response = await fetchCookies();
+  res.send({cookies: response});
 });

@@ -1,37 +1,18 @@
 const headers = require("../public/headers.json")
 const axios = require('axios');
 const cheerio = require('cheerio');
-const { MongoClient } = require("mongodb")
+const { apps, cookies } = require("../database");
 require('dotenv').config();
-
-const database = new MongoClient(`mongodb+srv://admin:${process.env.PASS_DB}@freecluster.7xu0m7g.mongodb.net/?retryWrites=true&w=majority`);
-async function connectToDatabase() {
-  try {
-    await database.connect();
-    console.log("Connected to the database");
-  } catch (error) {
-    console.error("Database Error: ", error.message);
-  }
-}
 
 async function searchByAppId(id) {
   try {
-    const exists = await database.db("steam").collection("apps").findOne({_id: id});
-    const cookies = await database.db("steam").collection("cookies").findOne({_id: "cookies"});
+    const exists = await apps.findOne({_id: id});
     if (exists) return exists;
-    if (cookies && cookies.cookies) {
-      cookies.cookies.forEach(cookie => {
-        if (cookie.name === "wants_mature_content") {
-          cookie.path = `/app/${id}`;
-        }
-      });
-    }
-    // console.log(cookies.cookies);
     const response = await axios.get(
       `https://store.steampowered.com/app/${id}/`,
       {
         headers: {
-          Cookie: cookies.cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; '),
+          Cookie: (await cookies()).cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; '),
           headers: headers
         },
       }
@@ -95,7 +76,7 @@ async function searchByAppId(id) {
       if (contentPrice) return ({name: contentName, price: contentPrice});
     }).get();
     const doc = {
-      _id: id,
+      _id: parseInt(id),
       data: {
         appid: parseInt(id),
         title,
@@ -119,10 +100,10 @@ async function searchByAppId(id) {
       }
     }
     if (doc.data.title.length <= 0) return
-    await database.db("steam").collection("apps").createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
+    await apps.createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
     doc.expiresAt = new Date();
     doc.expiresAt.setSeconds(doc.expiresAt.getSeconds() + 604800);
-    await database.db("steam").collection("apps").insertOne(doc);
+    await apps.insertOne(doc);
     return doc;
   } catch (error) {
     console.error(error)
@@ -130,4 +111,4 @@ async function searchByAppId(id) {
   }
 }
 
-module.exports = { searchByAppId, connectToDatabase, database }
+module.exports = { searchByAppId }

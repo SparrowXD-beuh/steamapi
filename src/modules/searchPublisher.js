@@ -1,22 +1,18 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
-const { database } = require("./searchByAppId");
+const { developers, cookies } = require("../database");
+const headers = require("../public/headers.json")
 
 const searchPublisher = async function (name) { 
   try {
-    const exists = await database.db("steam").collection("developers").findOne({_id: name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '').replace(' ', '+')});
+    const exists = await developers.findOne({_id: name.toLowerCase().replace(/[^a-zA-Z0-9]/g, '').replace(' ', '+')});
     if (exists) return exists;
-    const cookies = await database.db("steam").collection("cookies").findOne({_id: "cookies"});
-    if (cookies && cookies.cookies) {
-      cookies.cookies.forEach(cookie => {
-        cookie.secure = true;
-      });
-    }
     const response = await axios.get(
       `https://store.steampowered.com/publisher/${name}/`,
       {
         headers: {
-          Cookie: cookies
+          Cookie: (await cookies()).cookies.map(cookie => `${cookie.name}=${cookie.value}`).join('; '),
+          headers: headers
         },
       }
     );
@@ -53,10 +49,10 @@ const searchPublisher = async function (name) {
       temp: featured
     }
     if (doc.data.name.length <= 0) return
-    await database.db("steam").collection("developers").createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
+    await developers.createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
     doc.expiresAt = new Date();
     doc.expiresAt.setSeconds(doc.expiresAt.getSeconds() + 604800);
-    await database.db("steam").collection("developers").insertOne(doc);
+    await developers.insertOne(doc);
     return doc;
   } catch (error) {
     console.error(error)

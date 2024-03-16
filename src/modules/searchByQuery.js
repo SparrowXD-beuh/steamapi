@@ -6,7 +6,7 @@ async function searchByQuery(query) {
   const appIds = [];
   const results = [];
   await axios
-    .get(`https://store.steampowered.com/search/?term=${query}`)
+    .get(`https://store.steampowered.com/search/?term=${query}&category1=998`)
     .then(async (res) => {
       const resource = cheerio.load(res.data);
       resource("div#search_result_container")
