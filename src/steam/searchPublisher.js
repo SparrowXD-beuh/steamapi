@@ -48,7 +48,7 @@ const searchPublisher = async function (name) {
       },
       temp: featured
     }
-    if (doc.data.name.length <= 0) return
+    if (doc.data.name.length <= 0) throw new Error("Invalid app_id")
     await developers.createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
     doc.expiresAt = new Date();
     doc.expiresAt.setSeconds(doc.expiresAt.getSeconds() + 604800);

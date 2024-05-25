@@ -1,10 +1,17 @@
-const path = require("path");
+const cron = require("node-cron");
 const express = require("express");
 const fetchCookies = require("./cookies");
 const { connectToDatabase } = require("./database");
-const { searchByQuery } = require('./modules/searchByQuery')
-const { searchByAppId } = require("./modules/searchByAppId");
-const searchPublisher = require("./modules/searchPublisher");
+
+const searchByTitle = require("./imdb/searchByTitle");
+const getCastByImdbId = require("./imdb/getCastByImdbId");
+const getInfoByImdbId = require("./imdb/getInfoByImdbId");
+const getEpisodesByImdbId = require("./imdb/getEpisodesByImdbId");
+
+const searchByAppId = require("./steam/searchByAppId");
+const searchByQuery = require("./steam/searchByQuery");
+const searchPublisher = require("./steam/searchPublisher");
+
 
 const app = express();
 connectToDatabase().then(() => {
@@ -13,49 +20,55 @@ connectToDatabase().then(() => {
   });
 })
 
-app.get("/search", async (req, res) => {
-  console.time();
-  try {
-    const response = await searchByQuery((req.query.q).replace('%20','+'));
-    if (response.length <= 0) throw new Error("Empty response");
-    res.send({
-      status: res.statusCode,
-      data: response
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(404).send({
-      status: res.statusCode,
-      error: "Couldnt find any games for this search"
-    })
-  } finally {
-    console.timeEnd();
-  }
+const imdbRoutes = express.Router();
+const steamRoutes = express.Router();
+app.use("/imdb", imdbRoutes);
+app.use("/steam", steamRoutes);
+
+app.get(`/api/cookies`, async (req, res) => {
+  if (req.query.key != process.env.KEY) return res.send({
+    statusCode: 404,
+    error: "invalid request. cannot get /api/cookies",
+    docs: "/docs"
+  });
+  const response = await fetchCookies();
+  res.send({cookies: response});
 });
 
-app.get("/app/:id", async (req, res) => {
-  console.time();
+steamRoutes.get("/app/:id", async (req, res) => {
   try {
-    const response = await searchByAppId(req.params.id);
-    // console.log(response);
-    if (!response) throw new Error();
+    const { id } = req.params;
+    const response = await searchByAppId(id);
     res.send({
-      status: res.statusCode,
+      statusCode: res.statusCode,
       data: response.data
     });
   } catch (error) {
-    console.error(error);
     res.status(404).send({
-      status: res.statusCode,
-      error: "Couldnt find the game for this appid"
+      statusCode: 404,
+      error: error
     })
-  } finally {
-    console.timeEnd();
   }
-});
+})
 
-app.get("/developer/:q", async (req, res) => {
-  console.time();
+steamRoutes.get("/search", async (req, res) => {
+  try {
+    const { q, query } = req.query;
+    const response = await searchByQuery(q || query);
+    if (response.length <= 0) throw new Error("No results for: " + (q || query))
+    res.send({
+      statusCode: res.statusCode,
+      data: response
+    });
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error.message
+    })
+  }
+})
+
+steamRoutes.get("/developer/:q", async (req, res) => {
   try {
     const response = await searchPublisher((req.params.q).replace(' ','+'));
     if (!response) throw new Error();
@@ -68,30 +81,78 @@ app.get("/developer/:q", async (req, res) => {
     }));
     response.data.list = featuredGames;
     res.send({
-      status: res.statusCode,
+      statusCode: res.statusCode,
       data: response.data
     });
   } catch (error) {
     console.error(error);
     res.status(404).send({
-      status: res.statusCode,
+      statusCode: res.statusCode,
       error: "Couldnt find the developer for this name"
     })
-  } finally {
-    console.timeEnd();
   }
-});
+})
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/docs.html"));
-});
+imdbRoutes.get("/:imdb_id/episodes", async (req, res) => {
+  try {
+    const response = await getEpisodesByImdbId(req.params.imdb_id, req.query.season || req.query.s);
+    res.send({
+      statusCode: res.statusCode,
+      body: response
+    })
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error
+    })
+  }
+})
 
-app.get(`/api/cookies`, async (req, res) => {
-  if (req.query.key != process.env.KEY) return res.send({
-    statusCode: 404,
-    error: "invalid request. cannot get /api/cookies",
-    docs: "/docs"
-  });
-  const response = await fetchCookies();
-  res.send({cookies: response});
+imdbRoutes.get("/search", async (req, res) => {
+  try {
+    const response = await searchByTitle(req.query.query || req.query.q);
+    res.send({
+      statusCode: res.statusCode,
+      body: response
+    })
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error
+    })
+  }
+})
+
+imdbRoutes.get("/:imdb_id/cast", async (req, res) => {
+  try {
+    const response = await getCastByImdbId(req.params.imdb_id, req.query.query || req.query.q);
+    res.send({
+      statusCode: res.statusCode,
+      body: response
+    })
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error
+    })
+  }
+})
+
+imdbRoutes.get("/:imdb_id", async (req, res) => {
+  try {
+    const response = await getInfoByImdbId(req.params.imdb_id);
+    res.send({
+      statusCode: res.statusCode,
+      body: response
+    })
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error
+    })
+  }
+})
+
+cron.schedule('0 */6 * * *', async() => {
+  await fetchCookies();
 });

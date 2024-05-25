@@ -6,7 +6,7 @@ require('dotenv').config();
 
 async function searchByAppId(id) {
   try {
-    const exists = await apps.findOne({_id: id});
+    const exists = await apps.findOne({_id: parseInt(id)});
     if (exists) return exists;
     const response = await axios.get(
       `https://store.steampowered.com/app/${id}/`,
@@ -99,7 +99,7 @@ async function searchByAppId(id) {
         languages
       }
     }
-    if (doc.data.title.length <= 0) return
+    if (doc.data.title.length <= 0) return;
     await apps.createIndex({ "expiresAt": 1 }, { expireAfterSeconds: 604800 });
     doc.expiresAt = new Date();
     doc.expiresAt.setSeconds(doc.expiresAt.getSeconds() + 604800);
@@ -107,8 +107,9 @@ async function searchByAppId(id) {
     return doc;
   } catch (error) {
     console.error(error)
-    throw error
+    if (error.name == "AxiosError") error.message = "Invalid app_id: " + id;
+    throw error.message
   }
 }
 
-module.exports = { searchByAppId }
+module.exports = searchByAppId
