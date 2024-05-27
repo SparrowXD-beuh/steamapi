@@ -1,8 +1,6 @@
 const cron = require("node-cron");
-const { Router } = require("express");
 const express = require("express");
 const fetchCookies = require("./cookies");
-const serverless = require("serverless-http");
 const { connectToDatabase } = require("./database");
 const searchByTitle = require("./imdb/searchByTitle");
 const getCastByImdbId = require("./imdb/getCastByImdbId");
@@ -19,9 +17,13 @@ connectToDatabase().then(() => {
   });
 })
 
-const router = Router();
-app.use("/.netlify/functions/api", router);
-router.get("/steam/app/:id", async (req, res) => {
+const steamRoutes = express.Router();
+const imdbRoutes = express.Router();
+app.use("/imdb/", imdbRoutes);
+app.use("/steam/", steamRoutes);
+
+app.get("/", (req, res) => { res.send("hello world") })
+steamRoutes.get("/steam/app/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const response = await searchByAppId(id);
@@ -37,7 +39,7 @@ router.get("/steam/app/:id", async (req, res) => {
   }
 })
 
-router.get("/steam/search", async (req, res) => {
+steamRoutes.get("/steam/search", async (req, res) => {
   try {
     const { q, query } = req.query;
     const response = await searchByQuery(q || query);
@@ -54,7 +56,7 @@ router.get("/steam/search", async (req, res) => {
   }
 })
 
-router.get("/steam/developer/:q", async (req, res) => {
+steamRoutes.get("/steam/developer/:q", async (req, res) => {
   try {
     const response = await searchPublisher((req.params.q).replace(' ','+'));
     if (!response) throw new Error();
@@ -79,7 +81,7 @@ router.get("/steam/developer/:q", async (req, res) => {
   }
 })
 
-router.get("/imdb/:imdb_id/episodes", async (req, res) => {
+imdbRoutes.get("/imdb/:imdb_id/episodes", async (req, res) => {
   try {
     const response = await getEpisodesByImdbId(req.params.imdb_id, req.query.season || req.query.s);
     res.send({
@@ -94,7 +96,7 @@ router.get("/imdb/:imdb_id/episodes", async (req, res) => {
   }
 })
 
-router.get("/imdb/search", async (req, res) => {
+imdbRoutes.get("/imdb/search", async (req, res) => {
   try {
     const response = await searchByTitle(req.query.query || req.query.q);
     res.send({
@@ -109,7 +111,7 @@ router.get("/imdb/search", async (req, res) => {
   }
 })
 
-router.get("/imdb/:imdb_id/cast", async (req, res) => {
+imdbRoutes.get("/imdb/:imdb_id/cast", async (req, res) => {
   try {
     const response = await getCastByImdbId(req.params.imdb_id, req.query.query || req.query.q);
     res.send({
@@ -124,7 +126,7 @@ router.get("/imdb/:imdb_id/cast", async (req, res) => {
   }
 })
 
-router.get("/imdb/:imdb_id", async (req, res) => {
+imdbRoutes.get("/imdb/:imdb_id", async (req, res) => {
   try {
     const response = await getInfoByImdbId(req.params.imdb_id);
     res.send({
@@ -142,6 +144,3 @@ router.get("/imdb/:imdb_id", async (req, res) => {
 cron.schedule('0 */6 * * *', async() => {
   await fetchCookies();
 });
-
-
-module.exports.handler = serverless(app);
