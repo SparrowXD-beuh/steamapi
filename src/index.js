@@ -1,5 +1,6 @@
 const cron = require("node-cron");
-const { Router, default: express } = require("express");
+const { Router } = require("express");
+const express = require("express");
 const fetchCookies = require("./cookies");
 const { connectToDatabase } = require("./database");
 
@@ -20,7 +21,7 @@ connectToDatabase().then(() => {
 })
 
 const router = Router();
-app.use("/app/", router);
+app.use("/scraper/", router);
 router.get("/steam/app/:id", async (req, res) => {
   try {
     const { id } = req.params;
