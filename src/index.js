@@ -2,8 +2,8 @@ const cron = require("node-cron");
 const { Router } = require("express");
 const express = require("express");
 const fetchCookies = require("./cookies");
+const serverless = require("serverless-http");
 const { connectToDatabase } = require("./database");
-
 const searchByTitle = require("./imdb/searchByTitle");
 const getCastByImdbId = require("./imdb/getCastByImdbId");
 const getInfoByImdbId = require("./imdb/getInfoByImdbId");
@@ -143,3 +143,6 @@ router.get("/imdb/:imdb_id", async (req, res) => {
 cron.schedule('0 */6 * * *', async() => {
   await fetchCookies();
 });
+
+const handler = serverless(app)
+module.exports = handler;
