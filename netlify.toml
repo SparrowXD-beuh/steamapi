@@ -1,8 +1,2 @@
-[functions]
-  external_node_modules = ["axios", "cheerio", "dotenv", "express", "mongodb", "node-cron", "puppeteer-core"]
-  node_bundler = "esbuild"
-[[redirects]]
-  force = true
-  from = "/scraper/*"
-  status = 200
-  to = "/.netlify/functions/scraper/:splat"
+[build]
+    functions = "functions/src"

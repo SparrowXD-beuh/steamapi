@@ -8,7 +8,6 @@ const searchByTitle = require("./imdb/searchByTitle");
 const getCastByImdbId = require("./imdb/getCastByImdbId");
 const getInfoByImdbId = require("./imdb/getInfoByImdbId");
 const getEpisodesByImdbId = require("./imdb/getEpisodesByImdbId");
-
 const searchByAppId = require("./steam/searchByAppId");
 const searchByQuery = require("./steam/searchByQuery");
 const searchPublisher = require("./steam/searchPublisher");
@@ -21,7 +20,7 @@ connectToDatabase().then(() => {
 })
 
 const router = Router();
-app.use("/scraper/", router);
+app.use("/.netlify/functions/api", router);
 router.get("/steam/app/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -144,5 +143,5 @@ cron.schedule('0 */6 * * *', async() => {
   await fetchCookies();
 });
 
-const handler = serverless(app)
-module.exports = handler;
+
+module.exports.handler = serverless(app);
