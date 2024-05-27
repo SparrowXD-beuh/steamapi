@@ -1,13 +1,5 @@
 [functions]
-  external_node_modules = [
-    axios,
-    cheerio,
-    dotenv,
-    express,
-    mongodb,
-    node-cron,
-    puppeteer-core
-  ]
+  external_node_modules = [axios, cheerio, dotenv, express, mongodb, node-cron, puppeteer-core]
   node_bundler = "esbuild"
 [[redirects]]
   force = true
