@@ -18,11 +18,14 @@ const getInfoByImdbId = async (imdb_id) => {
         const producers = $("a:contains('Production companies')").next("div").find("a").map((index, element) => {
             return ($(element).text().trim());
         }).get();
-        const rating = $("div[data-testid='hero-rating-bar__aggregate-rating__score']").eq(0).find("span").text().trim();
+        const scored = {score: $("div[data-testid='hero-rating-bar__aggregate-rating__score']").eq(0).find("span").text(), scored_by: $("div.sc-bde20123-3").first().text()};
         const creator = $("a.ipc-metadata-list-item__list-content-item").eq(0).text().trim();
         const seasons = $("select#browse-episodes-season").find("option").length - 2;
         const episodes = parseInt($("span.ipc-title__subtext").eq(0).text().trim());
-        const storyline = $('span.sc-466bb6c-0').text().trim();
+        const storyline = $('span.sc-7193fc79-0').text().trim();
+        const year = $(`a[href='/title/${imdb_id}/releaseinfo?ref_=tt_ov_rdat']`).text();
+        const rating = $(`a[href='/title/${imdb_id}/parentalguide/certificates?ref_=tt_ov_pg']`).text();
+        const runtime = $("ul.sc-d8941411-2 li").last().text();
         const doc = {
             _id: imdb_id,
             data: {
@@ -37,6 +40,9 @@ const getInfoByImdbId = async (imdb_id) => {
                 seasons: seasons <= 0 ? null : seasons,
                 episodes: seasons <= 0 ? null : episodes,
                 rating,
+                scored,
+                year,
+                runtime
             }
         };
         if (doc.data.title.length <= 0) return;

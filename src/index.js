@@ -9,6 +9,8 @@ const getEpisodesByImdbId = require("./imdb/getEpisodesByImdbId");
 const searchByAppId = require("./steam/searchByAppId");
 const searchByQuery = require("./steam/searchByQuery");
 const searchPublisher = require("./steam/searchPublisher");
+const getByCode = require("./nhentai/getByCode");
+const searchByName =  require("./nhentai/searchByName");
 
 const app = express();
 connectToDatabase().then(() => {
@@ -19,14 +21,16 @@ connectToDatabase().then(() => {
 
 const steamRoutes = express.Router();
 const imdbRoutes = express.Router();
+const nhentaiRoutes = express.Router();
 app.use("/imdb/", imdbRoutes);
 app.use("/steam/", steamRoutes);
+app.use("/nhentai/", nhentaiRoutes);
 
 app.get("/", (req, res) => { res.send("hello world") })
+
 steamRoutes.get("/app/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    const response = await searchByAppId(id);
+    const response = await searchByAppId(req.params.id);
     res.send({
       statusCode: res.statusCode,
       data: response.data
@@ -41,9 +45,8 @@ steamRoutes.get("/app/:id", async (req, res) => {
 
 steamRoutes.get("/search", async (req, res) => {
   try {
-    const { q, query } = req.query;
     const response = await searchByQuery(q || query);
-    if (response.length <= 0) throw new Error("No results for: " + (q || query))
+    if (response.length <= 0) throw new Error("No results for: " + (req.query.q))
     res.send({
       statusCode: res.statusCode,
       data: response
@@ -81,54 +84,88 @@ steamRoutes.get("/developer/:q", async (req, res) => {
   }
 })
 
-imdbRoutes.get("/:imdb_id/episodes", async (req, res) => {
-  try {
-    const response = await getEpisodesByImdbId(req.params.imdb_id, req.query.season || req.query.s);
-    res.send({
-      statusCode: res.statusCode,
-      body: response
-    })
-  } catch (error) {
-    res.status(404).send({
-      statusCode: 404,
-      error: error
-    })
-  }
-})
-
 imdbRoutes.get("/search", async (req, res) => {
   try {
-    const response = await searchByTitle(req.query.query || req.query.q);
+    const response = await searchByTitle(req.query.q);
     res.send({
       statusCode: res.statusCode,
-      body: response
-    })
+      body: response,
+    });
   } catch (error) {
     res.status(404).send({
       statusCode: 404,
-      error: error
-    })
+      error: error,
+    });
   }
-})
-
-imdbRoutes.get("/:imdb_id/cast", async (req, res) => {
-  try {
-    const response = await getCastByImdbId(req.params.imdb_id, req.query.query || req.query.q);
-    res.send({
-      statusCode: res.statusCode,
-      body: response
-    })
-  } catch (error) {
-    res.status(404).send({
-      statusCode: 404,
-      error: error
-    })
-  }
-})
+});
 
 imdbRoutes.get("/:imdb_id", async (req, res) => {
   try {
     const response = await getInfoByImdbId(req.params.imdb_id);
+    res.send({
+      statusCode: res.statusCode,
+      body: response,
+    });
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error,
+    });
+  }
+});
+
+imdbRoutes.get("/:imdb_id/cast", async (req, res) => {
+  try {
+    const response = await getCastByImdbId(req.params.imdb_id, req.query.q);
+    res.send({
+      statusCode: res.statusCode,
+      body: response,
+    });
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error,
+    });
+  }
+});
+
+imdbRoutes.get("/:imdb_id/episodes", async (req, res) => {
+  try {
+    const response = await getEpisodesByImdbId(
+      req.params.imdb_id,
+      req.query.season || req.query.s
+    );
+    res.send({
+      statusCode: res.statusCode,
+      body: response,
+    });
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error,
+    });
+  }
+});
+
+nhentaiRoutes.get("/search", async (req, res) => {
+  try {
+    console.log(req);
+    const response = await searchByName(req.query.q);
+    res.send({
+      statusCode: res.statusCode,
+      body: response
+    })
+  } catch (error) {
+    res.status(404).send({
+      statusCode: 404,
+      error: error
+    })
+  }
+})
+
+nhentaiRoutes.get("/:code", async (req, res) => {
+  try {
+    const response = await getByCode(req.params.code);
     res.send({
       statusCode: res.statusCode,
       body: response
@@ -144,3 +181,7 @@ imdbRoutes.get("/:imdb_id", async (req, res) => {
 cron.schedule('0 */6 * * *', async() => {
   await fetchCookies();
 });
+
+module.exports = {
+  imdbRoutes
+}
